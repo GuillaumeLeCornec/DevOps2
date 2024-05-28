@@ -483,3 +483,6 @@ sonar.login: Authentication token for SonarCloud, securely stored in your CI env
 Go to your repository's settings.
 Navigate to "Secrets" or "Variables" (depending on your CI platform).
 Add a new secret named SONAR_TOKEN and set its value to your SonarCloud token.
+
+## BONUS : DONE !
+The test_backend and build-and-push-docker-image are now splited !
