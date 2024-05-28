@@ -302,6 +302,47 @@ volumes: Defines a named volume (db-data) to persist data, ensuring that the dat
 
 ### 1-5 Document your publication commands and published images in dockerhub.
 
+# Step 1:  Create a Docker Hub account
+
+Follow the link: https://hub.docker.com/
+
+# Step 2: Tag Your Docker Images
+
+Before pushing your images to Docker Hub, you need to tag them with your repository name and desired tag.
+
+Tagging my-running-app:
+```bash
+docker tag my-running-app guillaume225/my-running-app:1.0
+```
+
+Tagging my-postgres-db:
+```bash
+docker tag my-postgres-db guillaume225/my-postgres-db:1.0
+```
+
+Tagging simple-api-student:
+```bash
+docker tag simple-api-student guillaume225/simple-api-student:1.0
+```
+
+# Step 3: Login to Docker Hub
+Authenticate with Docker Hub using your credentials.
+
+docker login -u guillaume225 -p dckr_pat_5IObyxMP3LiS1ylCmpTM6ri8C6o
+Pushing my-running-app:
+
+docker push guillaume225/my-running-app:1.0
+Pushing simple-api-student:
+
+docker push guillaume225/simple-api-student:1.0
+
 ### Why do we put our images into an online repo?
 
+Using an online repository for Docker images, such as Docker Hub, provides several significant benefits for software development, deployment, and collaboration. For many reasons, it is a good option:
 
+1. Collaboration and Sharing
+- Team Collaboration: Online repositories allow team members to share Docker images easily. This is especially useful in collaborative environments where multiple developers or teams need access to the same images.
+- Community Sharing: By pushing images to public repositories, you can share your work with the wider community. This fosters open-source collaboration and allows others to use and contribute to your projects.
+2. Consistency and Reproducibility
+- Standardization: Storing images in a centralized repository ensures that everyone is using the same version of an image, reducing discrepancies between different environments.
+- Reproducibility: Having a standardized image available online means that you can reproduce the same environment across different machines and stages of development, testing, and production.
