@@ -398,3 +398,88 @@ Workflow Steps:
 2) Set up JDK 17: This step sets up JDK 17 using the actions/setup-java@v3 action with the Temurin distribution. This ensures the correct Java version is used for building and testing the application.
 
 3) Build and Test with Maven: This step changes the working directory to TP1/API/simple-api-student-main where the pom.xml file is located and then runs the mvn clean verify command to build and test the application.
+
+
+## Document your quality gate configuration.
+
+Here is the code I used to configure the quality gate:
+```yaml 
+name: CI devops 2024
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-22.04
+    steps:
+      # Checkout your GitHub code using actions/checkout@v2.5.0
+      - uses: actions/checkout@v2.5.0
+
+      # Set up JDK 17 using actions/setup-java@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Build and test with Maven and SonarCloud analysis
+      - name: Build, test, and analyze with SonarCloud
+        working-directory: TP1/API/simple-api-student-main
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=keytp2_project-tp2 -Dsonar.organization=keytp2 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+  build-and-push-docker-image:
+    needs: test-backend
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v3
+        with:
+          context: ./TP1/API/simple-api-student-main
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple-api-student:latest
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build image and push database
+        uses: docker/build-push-action@v3
+        with:
+          context: ./TP1
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-postgres-db:latest
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build image and push httpd
+        uses: docker/build-push-action@v3
+        with:
+          context: ./TP1/HTTP
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-running-app:latest
+          push: ${{ github.ref == 'refs/heads/main' }}
+```
+
+To understand more precisly the code above, here is the part about the solarCloud configuration:
+
+```yaml
+- name: Build and test with Maven
+  run: mvn -B verify sonar:sonar -Dsonar.projectKey=devops-2024 -Dsonar.organization=devops-school -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./simple-api/pom.xml
+```
+
+### Parameters
+sonar.projectKey: Unique key for your SonarCloud project.
+sonar.organization: Key for your SonarCloud organizatio.
+sonar.host.url: URL for the SonarCloud instance.
+sonar.login: Authentication token for SonarCloud, securely stored in your CI environment secrets.
+
+### Adding the SonarCloud Token to Secrets
+Go to your repository's settings.
+Navigate to "Secrets" or "Variables" (depending on your CI platform).
+Add a new secret named SONAR_TOKEN and set its value to your SonarCloud token.
