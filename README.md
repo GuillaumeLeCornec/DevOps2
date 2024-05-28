@@ -40,7 +40,7 @@ docker run -d --name my-postgres-container --network app-network -v /data_dir:/v
 docker run -d -p 8090:8080 --name adminer --network app-network adminer
 ```
 
-### Access Adminer
+## Access Adminer
 Open your web browser and go to http://localhost:8090 to access Adminer. Use the following credentials to connect to the PostgreSQL database:
 
 - Server: my-postgres-container
@@ -48,7 +48,7 @@ Open your web browser and go to http://localhost:8090 to access Adminer. Use the
 - Password: pwd
 - Database: db
 
-### Explanation
+## Explanation
 
 - Dockerfile: Defines the PostgreSQL image configuration, including environment variables and SQL scripts to initialize the database.
 - docker build: Builds the Docker image from the Dockerfile.
@@ -58,7 +58,7 @@ Open your web browser and go to http://localhost:8090 to access Adminer. Use the
 - docker run --network: Runs the PostgreSQL container within the created network and mounts a volume for persistent data.
 - Adminer: A lightweight database management tool to manage PostgreSQL.
 
-### Why do we need a multistage build? And explain each step of this dockerfile.
+## Why do we need a multistage build? And explain each step of this dockerfile.
 
 A multi-stage build in Docker is used to optimize the process of building a Docker image. It helps create smaller and more secure images by separating the build and runtime stages into different containers. 
 
@@ -68,7 +68,7 @@ Here are the key benefits of using a multi-stage build:
 2) Enhanced Security: By including only the dependencies needed to run the application in the final image, you reduce the potential attack surface.
 3) Isolation of Build Steps: Separating the build and runtime stages ensures that build tools and development dependencies are not present in the production image.
 
-### And explain each step of this dockerfile.
+## Explain each step of this dockerfile.
 
 ```bash
 FROM maven:3.8.6-amazoncorretto-17 AS myapp-build
@@ -114,18 +114,18 @@ ENTRYPOINT ["java", "-jar", "myapp.jar"]
 ```
 This line sets the entry point for the Docker container.
 
-### Why do we need a reverse proxy?
+## Why do we need a reverse proxy?
 
 A reverse proxy is a server that sits between client devices and a backend server, forwarding client requests to the backend server and returning the server's responses to the clients. It offers several advantages and is often used to enhance the performance, security, and manageability of web applications and services.
 For this Practical work, we need it to improve our performaces.
 
-### Why is docker-compose so important?
+## Why is docker-compose so important?
 
 Docker Compose is an essential tool for managing multi-container Docker applications because it simplifies several critical aspects of deploying and managing complex environments.
 The biggest benefit of Docker Compose is Multi-Container Deployment:
 Docker Compose allows you to define and manage multi-container Docker applications. It enables you to deploy multiple containers, such as databases, backend services, and frontend applications, with a single command.
 
-### 1-3 Document docker-compose most important commands.
+## 1-3 Document docker-compose most important commands.
 
 Docker Compose provides a set of commands that help you manage multi-container applications. Here are some of the most important Docker Compose commands:
 
@@ -159,14 +159,11 @@ docker-compose start
 ```
 
 Starts existing containers for a service.
-
 ```bash
 docker-compose stop
 ```
 
 Stops running containers without removing them.
-
-
 ```bash
 docker-compose restart
 ```
@@ -206,7 +203,7 @@ Options:
 -d, --detach: Run container in the background.
 --rm: Remove container after run.
 
-### Document your docker-compose file.
+## Document your docker-compose file.
 
 ```bash
 services:
@@ -300,13 +297,13 @@ volumes:
 volumes: Defines a named volume (db-data) to persist data, ensuring that the data in the PostgreSQL database is not lost when the container is stopped or removed.
 
 
-### 1-5 Document your publication commands and published images in dockerhub.
+## 1-5 Document your publication commands and published images in dockerhub.
 
-# Step 1:  Create a Docker Hub account
+### Step 1:  Create a Docker Hub account
 
 Follow the link: https://hub.docker.com/
 
-# Step 2: Tag Your Docker Images
+### Step 2: Tag Your Docker Images
 
 Before pushing your images to Docker Hub, you need to tag them with your repository name and desired tag.
 
@@ -325,7 +322,7 @@ Tagging simple-api-student:
 docker tag simple-api-student guillaume225/simple-api-student:1.0
 ```
 
-# Step 3: Login to Docker Hub
+### Step 3: Login to Docker Hub
 Authenticate with Docker Hub using your credentials.
 
 docker login -u guillaume225 -p dckr_pat_5IObyxMP3LiS1ylCmpTM6ri8C6o
@@ -336,7 +333,7 @@ Pushing simple-api-student:
 
 docker push guillaume225/simple-api-student:1.0
 
-### Why do we put our images into an online repo?
+## Why do we put our images into an online repo?
 
 Using an online repository for Docker images, such as Docker Hub, provides several significant benefits for software development, deployment, and collaboration. For many reasons, it is a good option:
 
