@@ -343,3 +343,9 @@ Using an online repository for Docker images, such as Docker Hub, provides sever
 2. Consistency and Reproducibility
 - Standardization: Storing images in a centralized repository ensures that everyone is using the same version of an image, reducing discrepancies between different environments.
 - Reproducibility: Having a standardized image available online means that you can reproduce the same environment across different machines and stages of development, testing, and production.
+
+
+# TP2 - Github
+
+## What are testcontainers?
+
