@@ -26,7 +26,7 @@ jobs:
       # Build and test with Maven and SonarCloud analysis
       - name: Build, test, and analyze with SonarCloud
         working-directory: TP1/API/simple-api-student-main
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=devops-2024 -Dsonar.organization=devops-school -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=keytp2_project-tp2 -Dsonar.organization=keytp2 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
   build-and-push-docker-image:
     needs: test-backend
