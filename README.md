@@ -349,3 +349,52 @@ Using an online repository for Docker images, such as Docker Hub, provides sever
 
 ## What are testcontainers?
 
+
+# Document your Github Actions configurations.
+
+The CI workflow is designed to:
+
+- Check out the repository code.
+- Set up JDK 17.
+- Build and test the application using Maven.
+Here is the workflow configuration:
+
+```bash
+name: CI devops 2024
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-22.04
+    steps:
+      # Checkout your GitHub code using actions/checkout@v2.5.0
+      - uses: actions/checkout@v2.5.0
+
+      # Set up JDK 17 using actions/setup-java@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Change directory to where the pom.xml file is located and build/test with Maven
+      - name: Build and test with Maven
+        working-directory: TP1/API/simple-api-student-main
+        run: mvn clean verify
+```
+
+Workflow Steps: 
+
+1) Checkout Code: This step uses the actions/checkout@v2.5.0 action to clone the repository's code into the runner environment.
+
+2) Set up JDK 17: This step sets up JDK 17 using the actions/setup-java@v3 action with the Temurin distribution. This ensures the correct Java version is used for building and testing the application.
+
+3) Build and Test with Maven: This step changes the working directory to TP1/API/simple-api-student-main where the pom.xml file is located and then runs the mvn clean verify command to build and test the application.
