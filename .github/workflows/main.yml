@@ -21,5 +21,5 @@ jobs:
 
       - name: Build and test with Maven
         run: |
-          cd TP1/API/simple-api-student-main
+          cd ./TP1/API/simple-api-student-main
           mvn clean verify
