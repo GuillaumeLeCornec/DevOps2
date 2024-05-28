@@ -28,10 +28,9 @@ jobs:
         working-directory: TP1/API/simple-api-student-main
         run: mvn clean verify
 
-build-and-push-docker-image:
+  build-and-push-docker-image:
     needs: test-backend
     runs-on: ubuntu-22.04
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.5.0
@@ -49,13 +48,13 @@ build-and-push-docker-image:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple-api-student:latest
           push: ${{ github.ref == 'refs/heads/main' }}
 
-    - name: Build image and push database
+      - name: Build image and push database
         uses: docker/build-push-action@v3
         with:
           context: ./TP1
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-postgres-db:latest
 
-    - name: Build image and push httpd
+      - name: Build image and push httpd
         uses: docker/build-push-action@v3
         with:
           context: ./TP1/HTTP
