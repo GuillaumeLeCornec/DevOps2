@@ -125,7 +125,7 @@ Docker Compose is an essential tool for managing multi-container Docker applicat
 The biggest benefit of Docker Compose is Multi-Container Deployment:
 Docker Compose allows you to define and manage multi-container Docker applications. It enables you to deploy multiple containers, such as databases, backend services, and frontend applications, with a single command.
 
-## 1-3 Document docker-compose most important commands.
+## Document docker-compose most important commands.
 
 Docker Compose provides a set of commands that help you manage multi-container applications. Here are some of the most important Docker Compose commands:
 
