@@ -16,10 +16,9 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'adopt'
-          
+          distribution: 'adopt' 
 
       - name: Build and test with Maven
         run: |
-          cd ./TP1/API/simple-api-student-main
+          cd TP1/API/simple-api-student-main
           mvn clean verify
