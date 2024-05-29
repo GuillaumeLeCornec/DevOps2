@@ -3,7 +3,7 @@
 - name: Run API
   docker_container:
     name: API
-    image: guillaume225/simple-api-student:1.0
+    image: guillaume225/simple-api-student:latest
     state: started
     networks:
       - name: app-network

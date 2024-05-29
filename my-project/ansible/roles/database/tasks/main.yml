@@ -3,7 +3,7 @@
 - name: Run database
   docker_container:
     name: my-postgres-container
-    image: guillaume225/my-postgres-db:1.0
+    image: guillaume225/my-postgres-db:latest
     state: started
     networks:
       - name: app-network

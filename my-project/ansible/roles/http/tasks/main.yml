@@ -4,7 +4,7 @@
 - name: Run httpd
   docker_container:
     name: server
-    image: guillaume225/my-running-app:1.0
+    image: guillaume225/my-running-app:latest
     state: started
     networks:
       - name: app-network

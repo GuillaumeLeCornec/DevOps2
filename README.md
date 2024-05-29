@@ -735,4 +735,192 @@ ansible-playbook -i inventories/setup.yml playbook.yml
 ```
 
 ## Document your docker_container tasks configuration
+## Deploy Your App
+
+Time has come to deploy your application to your Ansible managed server. Create specific roles for each part of your application and use the Ansible module docker_container to start your dockerized application.
+
+Here is what a docker_container task should look like:
+```yaml
+- name: Run HTTPD
+  docker_container:
+    name: httpd
+    image: jdoe/my-httpd:1.0
+```
+You must have at least these roles:
+- install docker
+- create network
+- launch database
+- launch app
+- launch proxy (server, http)
+
+1) Initialize the role for installing Docker:
+```yaml
+ansible-galaxy init roles/install_docker
+```
+You have then to modify the main.yml into the docker folder:
+```yml
+---
+- name: Install device-mapper-persistent-data
+  yum:
+    name: device-mapper-persistent-data
+    state: latest
+  
+- name: Install lvm2
+  yum:
+    name: lvm2
+    state: latest
+
+- name: Add Docker repository
+  command:
+    cmd: sudo yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install Docker
+  yum:
+    name: docker-ce
+    state: present
+
+- name: Install python3
+  yum:
+    name: python3
+    state: present
+
+- name: Install Docker with Python 3
+  pip:
+    name: docker
+    executable: pip3
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+- name: Ensure Docker is running
+  service:
+    name: docker
+    state: started
+  tags: docker
+
+- name: Log in to Docker Hub
+  community.docker.docker_login:
+    username: guillaume225
+    password: dckr_pat_MPJmH4u2qPtJ_UMTxhbFADztehs
+    reauthorize: yes
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3
+```
+
+2) Create Network Role
+Initialize the role for creating a network:
+```bash
+ansible-galaxy init roles/create_network
+```
+You have then to modify the main.yml into the network folder:
+```yml
+---
+- name: Create network
+  community.docker.docker_network:
+    name: app-network
+    state: present
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3
+```
+
+3) Launch Database Role
+Initialize the role for launching the database:
+```bash
+ansible-galaxy init roles/launch_database
+```
+
+You have then to modify the main.yml into the database folder:
+```yml
+---
+- name: Run database
+  community.docker.docker_container:
+    name: my-postgres-container
+    image: guillaume225/my-postgres-db:latest
+    state: started
+    networks:
+      - name: app-network
+    env:
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: db
+      POSTGRES_USER: usr 
+      BACKEND_PORT: "8080"
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3
+```
+4) Launch API Role
+Initialize the role for launching the API:
+```bash
+ansible-galaxy init roles/API
+```
+You have then to modify the main.yml into the API folder:
+```yml
+---
+- name: Run API
+  community.docker.docker_container:
+    name: API
+    image: guillaume225/simple-api-student:latest
+    state: started
+    networks:
+      - name: app-network
+    ports:
+      - "8080:8080"
+    env:
+      DB_host: my-postgres-container
+      DB_port: "5432"
+      DB_name: db
+      DB_user: usr
+      DB_mdp: pwd
+      BACKEND_PORT: "8080"
+  vars: 
+     ansible_python_interpreter: /usr/bin/python3
+```
+5) Launch HTTP Role
+Initialize the role for launching the HTTP server:
+```bash
+ansible-galaxy init roles/http
+```
+You have then to modify the main.yml into the http folder:
+```yml
+---
+- name: Run httpd
+  community.docker.docker_container:
+    name: server
+    image: guillaume225/my-running-app:latest
+    state: started
+    networks:
+      - name: app-network
+    env:
+      BACKEND_host: API
+      BACKEND_PORT: "8080"
+    ports:
+      - "80:80"
+  vars: 
+     ansible_python_interpreter: /usr/bin/python3
+```
+6) Playbook
+Create the playbook to orchestrate the deployment using the roles, here is the playbook.yml:
+```yml
+---
+- hosts: all
+  gather_facts: false
+  become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  roles:
+    - install_docker
+    - create_network
+    - launch_database
+    - launch_api
+    - launch_http
+```
+7) Running the Playbook
+To deploy the application, run the following command:
+```bash
+ansible-playbook -i inventories/setup.yml playbook.yml
+```
+
+
+
+
+
 
