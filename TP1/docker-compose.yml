@@ -42,9 +42,11 @@ services:
 
   front:
     container_name: front_container
-    image: guillaume225/devops-front:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8080:80"
     networks:
       - app-network
     depends_on:
