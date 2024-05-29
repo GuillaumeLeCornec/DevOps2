@@ -665,6 +665,74 @@ ansible-galaxy init roles/docker
 ```
 This will generate a directory structure for the role, which you can then customize with tasks, handlers, and other necessary files for installing Docker.
 
+Then, you can go into the roles/docker folder, using "cd".
+
+### Now, Call the docker role from your playbook to check your refactor and your installation.
+
+Initialized role has a couple of directories, keep only the one you will need:
+
+tasks - contains the main list of tasks to be executed by the role.
+handlers - contains handlers, which may be used by this role or outside.
+
+- We delete some files/folders:
+```bash 
+rm -rf defaults files meta template vars
+```
+- In tasks/main.yml, put:
+```bash 
+---
+- name: Install device-mapper-persistent-data
+  yum:
+    name: device-mapper-persistent-data
+    state: latest
+ 
+- name: Install lvm2
+  yum:
+    name: lvm2
+    state: latest
+ 
+- name: Add Docker repository
+  command: yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+ 
+- name: Install Docker
+  yum:
+    name: docker-ce
+    state: present
+ 
+- name: Install python3
+  yum:
+    name: python3
+    state: present
+ 
+- name: Install Docker module for Python 3
+  pip:
+    name: docker
+    executable: pip3
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+ 
+- name: Ensure Docker is running
+  service:
+    name: docker
+    state: started
+  tags: docker
+```
+
+- Then we create a playbook in my-project/ansible.
+We put in it:
+```yml
+---
+- hosts: all
+  gather_facts: false
+  become: true
+ 
+  roles:
+    - docker
+```
+Run in the terminal to launch it:
+```bash
+ansible-playbook -i inventories/setup.yml playbook.yml
+```
 
 ## Document your docker_container tasks configuration
 
