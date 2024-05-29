@@ -239,15 +239,15 @@ services:
       - app-network
 ```
 
-container_name: Sets a custom name for the container running this service.
-image: Specifies the Docker image to use for this service (my-postgres-db:latest).
-environment: Defines environment variables for the PostgreSQL database:
-POSTGRES_DB: Name of the PostgreSQL database.
-POSTGRES_USER: Username for PostgreSQL.
-POSTGRES_PASSWORD: Password for PostgreSQL.
-volumes: Mounts a volume to persist data:
-db-data:/var/lib/postgresql/data: Maps the db-data volume to the specified path in the container to ensure data persistence.
-networks: Connects the service to the specified network (app-network).
+- container_name: Sets a custom name for the container running this service.
+- image: Specifies the Docker image to use for this service (my-postgres-db:latest).
+- environment: Defines environment variables for the PostgreSQL database:
+- POSTGRES_DB: Name of the PostgreSQL database.
+- POSTGRES_USER: Username for PostgreSQL.
+- POSTGRES_PASSWORD: Password for PostgreSQL.
+- volumes: Mounts a volume to persist data:
+- db-data:/var/lib/postgresql/data: Maps the db-data volume to the specified path in the container to ensure data persistence.
+- networks: Connects the service to the specified network (app-network).
 
 ```bash
   server:
@@ -264,15 +264,15 @@ networks: Connects the service to the specified network (app-network).
       - API
 ```
 
-container_name: Sets a custom name for the container running this service.
-image: Specifies the Docker image to use for this service (my-running-app:latest).
-environment: Defines environment variables for the service:
-BACKEND_host: Hostname of the backend API service.
-BACKEND_port: Port number of the backend API service.
-ports: Maps ports between the host and the container:
-"8091:80": Maps port 8091 on the host to port 80 on the container.
-networks: Connects the service to the specified network (app-network).
-depends_on: Ensures that this service starts only after the API service is running.
+- container_name: Sets a custom name for the container running this service.
+- image: Specifies the Docker image to use for this service (my-running-app:latest).
+- environment: Defines environment variables for the service:
+- BACKEND_host: Hostname of the backend API service.
+- BACKEND_port: Port number of the backend API service.
+- ports: Maps ports between the host and the container:
+- "8091:80": Maps port 8091 on the host to port 80 on the container.
+- networks: Connects the service to the specified network (app-network).
+- depends_on: Ensures that this service starts only after the API service is running.
 
 ```bash
 networks:
