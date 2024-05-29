@@ -1,0 +1,18 @@
+
+---
+# tasks file for roles/http
+- name: Run httpd
+  docker_container:
+    name: server
+    image: guillaume225/my-running-app:1.0
+    state: started
+    networks:
+      - name: app-network
+    env:
+      BACKEND_host: API
+    ports:
+      - "80:80"
+
+  vars: 
+     ansible_python_interpreter: /usr/bin/python3
+

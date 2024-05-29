@@ -1,13 +1,15 @@
 ---
-- name: Launch Database
+# tasks file for roles/database
+- name: Run database
   docker_container:
-    name: my_database
-    image: mysql:5.7
+    name: my-postgres-container
+    image: guillaume225/my-postgres-db:1.0
     state: started
-    env:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
     networks:
-      - name: my_app_network
+      - name: app-network
+    env:
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: db
+      POSTGRES_USER: usr 
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3

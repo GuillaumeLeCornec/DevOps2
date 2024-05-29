@@ -1,0 +1,20 @@
+---
+# tasks file for roles/api
+- name: Run API
+  docker_container:
+    name: API
+    image: guillaume225/simple-api-student:1.0
+    state: started
+    networks:
+      - name: app-network
+    ports:
+      - "8080:8080"
+    env:
+      DB_host: my-postgres-container
+      DATABASE_USER: usr
+      DATABASE_PASSWORD: pwd
+      DATABASE_NAME: db
+      DATABASE_PORT: "5432"
+
+  vars: 
+     ansible_python_interpreter: /usr/bin/python3
