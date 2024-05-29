@@ -214,16 +214,16 @@ services:
       - database
 ```
 
-container_name: Sets a custom name for the container running this service.
-image: Specifies the Docker image to use for this service (simple-api-student:latest).
-environment: Defines environment variables that the service will use:
-DB_host: Hostname of the database service.
-DB_port: Port number for the database service.
-DB_name: Name of the database.
-DB_user: Username for the database.
-DB_mdp: Password for the database.
-networks: Connects the service to the specified network (app-network).
-depends_on: Ensures that this service starts only after the database service is running.
+- container_name: Sets a custom name for the container running this service.
+- image: Specifies the Docker image to use for this service (simple-api-student:latest).
+- environment: Defines environment variables that the service will use:
+- DB_host: Hostname of the database service.
+- DB_port: Port number for the database service.
+- DB_name: Name of the database.
+- DB_user: Username for the database.
+- DB_mdp: Password for the database.
+- networks: Connects the service to the specified network (app-network).
+- depends_on: Ensures that this service starts only after the database service is running.
 
 ```bash
   database:
