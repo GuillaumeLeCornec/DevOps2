@@ -11,10 +11,10 @@
       - "8080:8080"
     env:
       DB_host: my-postgres-container
-      DATABASE_USER: usr
-      DATABASE_PASSWORD: pwd
-      DATABASE_NAME: db
-      DATABASE_PORT: "5432"
+      DB_port: 5432
+      DB_name: db
+      DB_user: usr
+      DB_mdp: pwd
 
   vars: 
      ansible_python_interpreter: /usr/bin/python3
