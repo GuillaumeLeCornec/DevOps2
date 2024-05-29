@@ -11,5 +11,6 @@
       POSTGRES_PASSWORD: pwd
       POSTGRES_DB: db
       POSTGRES_USER: usr 
+      BACKEND_PORT: "8080"
   vars: 
     ansible_python_interpreter: /usr/bin/python3

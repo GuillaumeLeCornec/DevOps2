@@ -10,6 +10,7 @@
       - name: app-network
     env:
       BACKEND_host: API
+      BACKEND_PORT: "8080"
     ports:
       - "80:80"
 

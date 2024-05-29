@@ -15,6 +15,7 @@
       DB_name: db
       DB_user: usr
       DB_mdp: pwd
+      BACKEND_PORT: "8080"
 
   vars: 
      ansible_python_interpreter: /usr/bin/python3
