@@ -132,8 +132,8 @@ Docker Compose provides a set of commands that help you manage multi-container a
 ```bash
 docker-compose up
 ```
-Builds, (re)creates, starts, and attaches to containers for a service.
-Options:
+- Builds, (re)creates, starts, and attaches to containers for a service.
+- Options:
 -d or --detach: Run containers in the background.
 --build: Rebuild images before starting containers.
 --scale SERVICE=NUM: Scale SERVICE to NUM instances.
@@ -141,16 +141,15 @@ Options:
 ```bash
 docker-compose down
 ```
-
-Stops and removes containers, networks, volumes, and images created by docker-compose up.
-Options:
+- Stops and removes containers, networks, volumes, and images created by docker-compose up.
+- Options:
 --volumes: Remove named volumes declared in the volumes section of the Compose file and anonymous volumes attached to containers.
 
 ```bash
 docker-compose build
 ```
-Builds or rebuilds services.
-Options:
+- Builds or rebuilds services.
+- Options:
 --no-cache: Do not use cache when building the image.
 --pull: Always attempt to pull a newer version of the image.
 
@@ -158,48 +157,41 @@ Options:
 docker-compose start
 ```
 
-Starts existing containers for a service.
+- Starts existing containers for a service.
 ```bash
 docker-compose stop
 ```
-
-Stops running containers without removing them.
+- Stops running containers without removing them.
 ```bash
 docker-compose restart
 ```
-
-Restarts running containers.
-
+- Restarts running containers.
 ```bash
 docker-compose ps
 ```
-
-Lists containers.
-Options:
+- Lists containers.
+- Options:
 -q, --quiet: Only display IDs.
-
 ```bash
 docker-compose logs
 ```
-
-Views output from containers.
-Options:
+- Views output from containers.
+- Options:
 -f, --follow: Follow log output.
 
 ```bash
 docker-compose exec
 ```
-
-Runs a command in a running service container.
-Options:
+- Runs a command in a running service container.
+- Options:
 -T, --no-TTY: Disable pseudo-TTY allocation. By default, docker-compose exec allocates a TTY.
 
 ```bash
 docker-compose run
 ```
 
-Runs a one-time command against a service.
-Options:
+- Runs a one-time command against a service.
+- Options:
 -d, --detach: Run container in the background.
 --rm: Remove container after run.
 
