@@ -1,0 +1,9 @@
+---
+- name: Launch Application
+  docker_container:
+    name: my_app
+    image: myuser/myapp:latest
+    state: started
+    env_file: /path/to/your/application.env
+    networks:
+      - name: my_app_network

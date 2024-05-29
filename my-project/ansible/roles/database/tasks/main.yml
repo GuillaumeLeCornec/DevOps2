@@ -1,0 +1,13 @@
+---
+- name: Launch Database
+  docker_container:
+    name: my_database
+    image: mysql:5.7
+    state: started
+    env:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    networks:
+      - name: my_app_network
