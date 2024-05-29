@@ -11,7 +11,7 @@
       - "8080:8080"
     env:
       DB_host: my-postgres-container
-      DB_port: 5432
+      DB_port: "5432"
       DB_name: db
       DB_user: usr
       DB_mdp: pwd
