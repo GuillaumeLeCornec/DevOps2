@@ -919,6 +919,97 @@ To deploy the application, run the following command:
 ansible-playbook -i inventories/setup.yml playbook.yml
 ```
 
+## Front 
+### Docker Setup and Deployment
+
+- Step 1: Build the Docker Image
+To build the Docker image for your frontend application, navigate to the directory containing your Dockerfile and run the following command:
+```bash
+docker build -t guillaume225/devops-front .
+```
+- Step 2: Log in to Docker Hub
+Log in to Docker Hub using your credentials:
+```bash
+docker login -u guillaume225 -p dckr_pat_MPJmH4u2qPtJ_UMTxhbFADztehs
+```
+- Step 3: Push the Docker Image to Docker Hub
+Push the built Docker image to Docker Hub:
+```bash
+docker push guillaume225/devops-front
+```
+- Step 4: Run the Docker Container
+Run a container from the pushed image:
+```bash
+docker run -d -p 8080:8080 --name front_container guillaume225/devops-front
+```
+- Step 5: Set Up Docker Compose
+Create a docker-compose.yml file with the following content to define and run multi-container Docker applications:
+
+docker-compose.yml:
+```yml
+version: '3.7'
+
+services:
+  API:
+    container_name: API
+    image: simple-api-student:latest
+    environment:
+      DB_host: my-postgres-container
+      DB_port: 5432
+      DB_name: db
+      DB_user: usr
+      DB_mdp: pwd
+    networks:
+      - app-network
+    depends_on:
+      - database
+
+  database:
+    container_name: my-postgres-container
+    image: my-postgres-db:latest
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: pwd
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  server:
+    container_name: server
+    image: my-running-app:latest
+    environment:
+      BACKEND_host: API
+      BACKEND_port: "8080"
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    depends_on:
+      - API
+
+  front:
+    container_name: front_container
+    image: guillaume225/devops-front:latest
+    environment:
+      BACKEND_host: API
+      BACKEND_port: "8080"
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    depends_on:
+      - API
+
+networks:
+  app-network:
+
+volumes:
+  db-data:
+```
+
+
 
 
 

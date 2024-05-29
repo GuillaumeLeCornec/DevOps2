@@ -1,48 +1,57 @@
 version: '3.7'
 
 services:
-    API:
-        container_name: API
-        image: simple-api-student:latest
-        environment:
-            DB_host: my-postgres-container
-            DB_port: 5432
-            DB_name: db
-            DB_user: usr
-            DB_mdp: pwd
-        networks:
-            - app-network
-        depends_on:
-            - database
+  API:
+    container_name: API
+    image: simple-api-student:latest
+    environment:
+      DB_host: my-postgres-container
+      DB_port: 5432
+      DB_name: db
+      DB_user: usr
+      DB_mdp: pwd
+    networks:
+      - app-network
+    depends_on:
+      - database
 
-    database:
-        container_name: my-postgres-container
-        image: my-postgres-db:latest
-        environment:
-            POSTGRES_DB: db
-            POSTGRES_USER: usr
-            POSTGRES_PASSWORD: pwd
-        volumes:
-            - db-data:/var/lib/postgresql/data
-        networks:
-            - app-network
+  database:
+    container_name: my-postgres-container
+    image: my-postgres-db:latest
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: pwd
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
-    server:
-        container_name: server
-        image: my-running-app:latest
-        environment:
-            BACKEND_host: API
-            BACKEND_port: "8080"
-        ports:
-            - "8091:80"
-        networks:
-            - app-network
-        depends_on:
-            - API
+  server:
+    container_name: server
+    image: my-running-app:latest
+    environment:
+      BACKEND_host: API
+      BACKEND_port: "8080"
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    depends_on:
+      - API
 
+  front:
+    container_name: front_container
+    image: guillaume225/devops-front:latest
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - API
 
 networks:
-    app-network:
+  app-network:
 
 volumes:
-    db-data:
+  db-data:
