@@ -486,3 +486,185 @@ Add a new secret named SONAR_TOKEN and set its value to your SonarCloud token.
 
 ## BONUS : DONE !
 The test_backend and build-and-push-docker-image are now splited !
+
+
+# TP3
+
+## Ansible Project Setup
+
+## Document your inventory and base commands
+
+### SSH Key
+
+The `id_rsa` file contains your SSH private key.
+
+### Set Permissions for SSH Key
+
+To set the correct permissions for your SSH private key, use the following command:
+
+```bash
+chmod 400 TP3/id_rsa
+```
+
+### Connect to the Server Manually
+To manually connect to the server using SSH:
+
+```bash
+ssh -i TP3/id_rsa centos@guillaume.lecornec.takima.cloud
+```
+### Inventory Configuration
+The setup.yml file contains the inventory configuration for Ansible:
+
+```bash
+all:
+  vars:
+    ansible_user: centos
+    ansible_ssh_private_key_file: ~/.ssh/id_rsa
+  children:
+    prod:
+      hosts: guillaume.lecornec.takima.cloud
+```
+### Ansible Commands
+Ping the Server
+To check the connectivity to the server with a ping command:
+
+```bash
+ansible all -i inventories/setup.yml -m ping
+```
+If everything works properly, the server should return "Pong".
+
+### Retrieve OS Distribution
+To request the server to get your OS distribution using the setup module:
+```bash 
+ansible all -i inventories/setup.yml -m setup -a "filter=ansible_distribution*"
+```
+### Remove Apache HTTPD Server
+To remove the Apache httpd server from your machine:
+```bash
+ansible all -i inventories/setup.yml -m yum -a "name=httpd state=absent" --become
+```
+
+### Instructions for Use
+
+1. Ensure you have set the correct permissions for your SSH private key using the `chmod` command.
+2. Use the provided commands to connect to the server, check connectivity, retrieve OS distribution, and manage the Apache HTTPD server.
+
+
+## Document your playbook
+
+### Simple Playbook
+
+In the same directory, in my-project/ansible/inventories, create a playbook.yml file.
+To test your connection, you can add within the playbook script:
+
+```yml
+- hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+   - name: Test connection
+     ping:
+```
+
+Make sure that you are in the directory where you have the setup.yml and the playbook.yml files, and run this command to launch it:
+```bash
+ansible-playbook -i setup.yml playbook.yml
+```
+
+##  Document your playbook
+
+### Advanced Playbook
+
+install_docker.yml:
+This playbook installs Docker and its dependencies on all targeted hosts.
+
+Playbook Content:
+
+```yml
+- hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Install device-mapper-persistent-data
+      yum:
+        name: device-mapper-persistent-data
+        state: latest
+
+    - name: Install lvm2
+      yum:
+        name: lvm2
+        state: latest
+
+    - name: Add Docker repository
+      command:
+        cmd: sudo yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Install Docker
+      yum:
+        name: docker-ce
+        state: present
+
+    - name: Install python3
+      yum:
+        name: python3
+        state: present
+
+    - name: Install Docker SDK for Python 3
+      pip:
+        name: docker
+        executable: pip3
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+
+    - name: Ensure Docker is running
+      service:
+        name: docker
+        state: started
+      tags: docker
+```
+### Running the Playbook
+To execute the playbook and install Docker, use the following command:
+```bash
+ansible-playbook -i inventories/setup.yml install_docker.yml
+```
+Playbook Execution Output
+After running the playbook, you should see output similar to the following:
+```bash
+PLAY [all] ************************************************************************************************************************************************
+
+TASK [Install device-mapper-persistent-data] **************************************************************************************************************
+ok: [guillaume.lecornec.takima.cloud]
+
+TASK [Install lvm2] ***************************************************************************************************************************************
+ok: [guillaume.lecornec.takima.cloud]
+
+TASK [Add Docker repository] ****************************************************************************************************************************
+changed: [guillaume.lecornec.takima.cloud]
+
+TASK [Install Docker] *************************************************************************************************************************************
+changed: [guillaume.lecornec.takima.cloud]
+
+TASK [Install python3] ************************************************************************************************************************************
+changed: [guillaume.lecornec.takima.cloud]
+
+TASK [Install Docker SDK for Python 3] ********************************************************************************************************************
+changed: [guillaume.lecornec.takima.cloud]
+
+TASK [Ensure Docker is running] **************************************************************************************************************************
+changed: [guillaume.lecornec.takima.cloud]
+
+PLAY RECAP ************************************************************************************************************************************************
+guillaume.lecornec.takima.cloud : ok=7    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+### Creating a Role for Docker Installation
+To create a reusable role for Docker installation, use the following command:
+```bash 
+ansible-galaxy init roles/docker
+```
+This will generate a directory structure for the role, which you can then customize with tasks, handlers, and other necessary files for installing Docker.
+
+
+## Document your docker_container tasks configuration
+
