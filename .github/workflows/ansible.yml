@@ -1,12 +1,19 @@
 name: Ansible Workflow
 
 on:
-  push:
-    branches:
+  workflow_run:
+    workflows: ["CI devops 2024"]
+    types:
+      - completed
+    branches: 
       - main
-  pull_request:
-    branches:
-      - main
+
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
   run-main-playbook:
