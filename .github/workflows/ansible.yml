@@ -16,22 +16,22 @@ on:
   #     - main
 
 jobs:
-  run-main-playbook:
-    runs-on: ubuntu-latest
+  # run-main-playbook:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v2
 
-    - name: Set up Ansible
-      run: |
-        sudo apt update
-        sudo apt install ansible -y
+  #   - name: Set up Ansible
+  #     run: |
+  #       sudo apt update
+  #       sudo apt install ansible -y
 
-    - name: Run main playbook
-      run: |
-        ansible-playbook -i inventories/setup.yml main.yml
-      continue-on-error: false  # Ensure this step fails the job if it fails
+  #   - name: Run main playbook
+  #     run: |
+  #       ansible-playbook -i inventories/setup.yml playbook.yml
+  #     continue-on-error: false  # Ensure this step fails the job if it fails
 
   run-project-playbook:
     runs-on: ubuntu-latest
