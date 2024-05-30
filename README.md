@@ -1088,7 +1088,7 @@ run-project-playbook:
   runs-on: ubuntu-latest
   needs: run-main-playbook
 ```
-Once everything is well-implemented and the code I described is written, the Ansible secret Key is well created in Github Actions, the wrorkflow works and the app is running evrytime we push to Github !
+Once everything is well-implemented and the code I described is written, the Ansible secret Key is well created in Github Actions, the wrorkflow works and the app is running evrytime we push to Github !.
 
 
 
