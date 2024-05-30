@@ -1001,6 +1001,96 @@ volumes:
   db-data:
 ```
 
+## Continuous Deployment
+
+We there use GitHub Actions to automate the execution of Ansible playbooks. The workflow is designed to run a main playbook (`main.yml`) and, once completed, trigger another playbook located in the `/my_project` directory.
+
+### Workflow Structure
+
+The workflow is defined in the `.github/workflows/ansible-workflow.yml` file. It consists of two jobs:
+
+1. `run-main-playbook`: Executes the main playbook.
+2. `run-project-playbook`: Executes the project playbook after the first job succeeds.
+
+### Workflow File
+
+```yaml
+name: Ansible Workflow
+
+on:
+  workflow_run:
+    workflows: ["CI devops 2024"]
+    types:
+      - completed
+    branches: 
+      - main
+
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  #   branches:
+  #     - main
+
+jobs:
+  run-main-playbook:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3  
+      with:
+        ssh-private-key: ${{ secrets.ANSIBLE_TOKEN }}  # Set the SSH private key from GitHub repository secrets
+    - name: Set up Ansible
+      run: |
+        sudo apt update
+        sudo apt install ansible -y
+
+    - name: Run main playbook
+      run: |
+        ansible-playbook -i inventories/setup.yml my-project/ansible/playbook.yml
+      continue-on-error: false  # Ensure this step fails the job if it fails
+
+```
+### Explanation
+- Triggers
+The workflow is triggered on every push or pull request to the main branch:
+```yml
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+```
+### Jobs
+- Job run-main-playbook
+This job runs the main playbook main.yml:
+
+- Checkout repository: Clones the repository using actions/checkout@v2.
+- Set up Ansible: Updates the system and installs Ansible.
+- Run main playbook: Runs the main playbook main.yml using the inventory inventories/setup.yml.
+- Job run-project-playbook
+- This job runs the playbook located in /my_project after the run-main-playbook job succeeds:
+
+1- Checkout repository: Clones the repository using actions/checkout@v2.
+2- Set up Ansible: Updates the system and installs Ansible.
+3- Run project playbook: Runs the playbook my_project/playbook.yml using the inventory inventories/setup.yml.
+
+### Job Dependency
+The run-project-playbook job uses needs: run-main-playbook to ensure it only runs if the run-main-playbook job succeeds:
+```yml
+run-project-playbook:
+  runs-on: ubuntu-latest
+  needs: run-main-playbook
+```
+Once everything is well-implemented and the code I described is written, the Ansible secret Key is well created in Github Actions, the wrorkflow works and the app is running evrytime we push to Github !
+
+
 
 
 
