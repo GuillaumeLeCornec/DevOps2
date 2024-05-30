@@ -16,26 +16,8 @@ on:
   #     - main
 
 jobs:
-  # run-main-playbook:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #   - name: Checkout repository
-  #     uses: actions/checkout@v2
-
-  #   - name: Set up Ansible
-  #     run: |
-  #       sudo apt update
-  #       sudo apt install ansible -y
-
-  #   - name: Run main playbook
-  #     run: |
-  #       ansible-playbook -i inventories/setup.yml playbook.yml
-  #     continue-on-error: false  # Ensure this step fails the job if it fails
-
-  run-project-playbook:
+  run-main-playbook:
     runs-on: ubuntu-latest
-    needs: run-main-playbook  # Ensure this job runs only if the previous job succeeded
 
     steps:
     - name: Checkout repository
@@ -46,6 +28,24 @@ jobs:
         sudo apt update
         sudo apt install ansible -y
 
-    - name: Run project playbook
+    - name: Run main playbook
       run: |
-        ansible-playbook -i inventories/setup.yml /my_project/playbook.yml
+        ansible-playbook -i inventories/setup.yml playbook.yml
+      continue-on-error: false  # Ensure this step fails the job if it fails
+
+  # run-project-playbook:
+  #   runs-on: ubuntu-latest
+  #   needs: run-main-playbook  # Ensure this job runs only if the previous job succeeded
+
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v2
+
+  #   - name: Set up Ansible
+  #     run: |
+  #       sudo apt update
+  #       sudo apt install ansible -y
+
+  #   - name: Run project playbook
+  #     run: |
+  #       ansible-playbook -i inventories/setup.yml /my_project/playbook.yml
