@@ -1077,9 +1077,9 @@ This job runs the main playbook main.yml:
 - Job run-project-playbook
 - This job runs the playbook located in /my_project after the run-main-playbook job succeeds:
 
-1- Checkout repository: Clones the repository using actions/checkout@v2.
-2- Set up Ansible: Updates the system and installs Ansible.
-3- Run project playbook: Runs the playbook my_project/playbook.yml using the inventory inventories/setup.yml.
+1) Checkout repository: Clones the repository using actions/checkout@v2.
+2) Set up Ansible: Updates the system and installs Ansible.
+3) Run project playbook: Runs the playbook my_project/playbook.yml using the inventory inventories/setup.yml.
 
 ### Job Dependency
 The run-project-playbook job uses needs: run-main-playbook to ensure it only runs if the run-main-playbook job succeeds:
