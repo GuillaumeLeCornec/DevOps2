@@ -30,7 +30,7 @@ jobs:
 
     - name: Run main playbook
       run: |
-        ansible-playbook -i inventories/setup.yml playbook.yml
+        ansible-playbook -i inventories/setup.yml my-project/ansible/playbook.yml
       continue-on-error: false  # Ensure this step fails the job if it fails
 
   # run-project-playbook:
